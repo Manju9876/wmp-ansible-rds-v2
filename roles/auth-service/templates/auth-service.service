@@ -10,7 +10,7 @@ ExecStart=/app/auth-service
 Restart=on-failure
 RestartSec=10
 
-Environment=DB_HOST=postgresql-dev.devopsbymanju.shop
+Environment=DB_HOST={{ aws_rds_endpoint_address }}
 Environment=DB_PORT=5432
 Environment=DB_USER=auth_svc_user
 Environment=DB_PASSWORD=localdev123
