@@ -1,0 +1,14 @@
+- name: Wealth Management Portfolio Setup
+  hosts: all
+  become: true
+  roles:
+    - "{{ component_name }}"
+
+
+
+
+
+
+
+
+

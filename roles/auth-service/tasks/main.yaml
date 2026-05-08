@@ -1,0 +1,53 @@
+#- name: Install Golang
+#  ansible.builtin.dnf:
+#    name: golang
+#    state: present
+#
+#- name: Ensure GOPATH exists
+#  ansible.builtin.file:
+#    path: /root/go
+#    state: directory
+#    owner: root
+#    group: root
+#    mode: '0755'
+#
+#- name: Include pre-reqs
+#  ansible.builtin.include_role:
+#    name: common
+#    tasks_from: pre-reqs
+#
+#- name: Build application
+#  ansible.builtin.shell: |
+#    export GOPATH=/root/go
+#    export GOMODCACHE=/root/go/pkg/mod
+#    export PATH=$PATH:/usr/local/go/bin:/usr/bin
+#    CGO_ENABLED=0 go build -o auth-service ./cmd/server
+#  args:
+#    chdir: /app
+#
+#- name: Include systemd
+#  ansible.builtin.include_role:
+#    name: common
+#    tasks_from: systemd_setup
+#
+#
+- name: Install Golang
+  ansible.builtin.dnf:
+    name: golang
+    state: present
+
+- name: Include pre-reqs
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: pre-reqs
+
+- name: Build application
+  ansible.builtin.shell: CGO_ENABLED=0 go build -o auth-service ./cmd/server
+  args:
+    chdir: /app
+
+- name: Include systemd
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: systemd_setup
+
