@@ -41,10 +41,19 @@
     name: common
     tasks_from: pre-reqs
 
+#- name: Build application
+#  ansible.builtin.shell: CGO_ENABLED=0 go build -o auth-service ./cmd/server
+#  args:
+#    chdir: /app
+
 - name: Build application
-  ansible.builtin.shell: CGO_ENABLED=0 go build -o auth-service ./cmd/server
+  ansible.builtin.command: go build -o auth-service ./cmd/server
   args:
     chdir: /app
+  environment:
+    CGO_ENABLED: "0"
+    GOPATH: /root/go
+    GOMODCACHE: /root/go/pkg/mod
 
 - name: Include systemd
   ansible.builtin.include_role:
