@@ -41,34 +41,35 @@
     name: common
     tasks_from: pre-reqs
 
-#- name: Build application
-#  ansible.builtin.shell: CGO_ENABLED=0 go build -o auth-service ./cmd/server
-#  args:
-#    chdir: /app
-
-
-- name: Create Go cache directories
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-    mode: '0755'
-  loop:
-    - /root/go
-    - /root/go/pkg
-    - /root/go/pkg/mod
-    - /root/.cache
-    - /root/.cache/go-build
-
 - name: Build application
-  ansible.builtin.command: go build -o auth-service ./cmd/server
+  ansible.builtin.shell: CGO_ENABLED=0 go build -o auth-service ./cmd/server
   args:
     chdir: /app
   environment:
-    CGO_ENABLED: "0"
-    GOPATH: /root/go
-    GOMODCACHE: /root/go/pkg/mod
-    GOCACHE: /root/.cache/go-build
-    HOME: /root
+    HOME: /app
+
+#- name: Create Go cache directories
+#  ansible.builtin.file:
+#    path: "{{ item }}"
+#    state: directory
+#    mode: '0755'
+#  loop:
+#    - /root/go
+#    - /root/go/pkg
+#    - /root/go/pkg/mod
+#    - /root/.cache
+#    - /root/.cache/go-build
+#
+#- name: Build application
+#  ansible.builtin.command: go build -o auth-service ./cmd/server
+#  args:
+#    chdir: /app
+#  environment:
+#    CGO_ENABLED: "0"
+#    GOPATH: /root/go
+#    GOMODCACHE: /root/go/pkg/mod
+#    GOCACHE: /root/.cache/go-build
+#    HOME: /root
 
 - name: Include systemd
   ansible.builtin.include_role:
